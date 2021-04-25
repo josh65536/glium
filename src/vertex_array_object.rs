@@ -156,6 +156,28 @@ impl<'a, 'b, 'c> Binder<'a, 'b, 'c> {
         self
     }
 
+    /// Adds a buffer to bind as a source of vertices.
+    ///
+    /// # Parameters
+    ///
+    /// - `buffer`: The buffer to bind.
+    /// - `first`: Offset of the first element of the buffer in number of elements.
+    /// - `stride`: Distance in bytes between the starts of consecutive elements in the buffer
+    /// - `divisor`: If `Some`, use this value for `glVertexAttribDivisor` (instancing-related).
+    #[inline]
+    pub fn add_with_stride(mut self, buffer: &BufferAnySlice<'_>, bindings: &VertexFormat, stride: usize, divisor: Option<u32>)
+               -> Binder<'a, 'b, 'c>
+    {
+        let offset = buffer.get_offset_bytes();
+
+        buffer.prepare_for_vertex_attrib_array(self.context);
+
+        let (buffer, format) = (buffer.get_id(), bindings.clone());
+
+        self.vertex_buffers.push((buffer, format, offset, stride, divisor));
+        self
+    }
+
     /// Finish binding the vertex attributes.
     ///
     /// If `base_vertex` was set to true, returns the base vertex to use when drawing.

@@ -127,7 +127,7 @@ The program you use when drawing must be the same as you the one you created the
 with, or else you will get an error.
 
 */
-use std::iter::Chain;
+use std::{borrow::Cow, iter::Chain};
 use std::option::IntoIter;
 
 pub use self::buffer::{VertexBuffer, VertexBufferAny};
@@ -153,6 +153,11 @@ pub enum VerticesSource<'a> {
     /// The third parameter tells whether or not this buffer is "per instance" (true) or
     /// "per vertex" (false).
     VertexBuffer(BufferAnySlice<'a>, &'a VertexFormat, bool),
+
+    /// A buffer uploaded in the video memory.
+    /// The third parameter is the stride specified manually.
+    /// Use at your own risk.
+    ManualVertexBuffer(BufferAnySlice<'a>, &'a VertexFormat, usize, bool),
 
     /// A marker indicating a "phantom list of attributes".
     Marker {
