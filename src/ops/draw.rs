@@ -110,15 +110,6 @@ pub fn draw<'a, U, V>(context: &Context, framebuffer: Option<&ValidatedAttachmen
 
                     binder = binder.add(&buffer, format, if per_instance { Some(1) } else { None });
                 },
-                VerticesSource::ManualVertexBuffer(buffer, format, stride, per_instance) => {
-                    // TODO: assert!(buffer.get_elements_size() == total_size(format));
-
-                    if let Some(fence) = buffer.add_fence() {
-                        fences.push(fence);
-                    }
-
-                    binder = binder.add_with_stride(&buffer, format, stride, if per_instance { Some(1) } else { None });
-                }
                 _ => {}
             }
 
@@ -140,25 +131,6 @@ pub fn draw<'a, U, V>(context: &Context, framebuffer: Option<&ValidatedAttachmen
                         }
                     } else {
                         instances_count = Some(buffer.get_elements_count());
-                    }
-                },
-                VerticesSource::ManualVertexBuffer(ref buffer, _, stride, false) => {
-                    if let Some(curr) = vertices_count {
-                        if curr != buffer.get_size() / stride {
-                            vertices_count = None;
-                            break;
-                        }
-                    } else {
-                        vertices_count = Some(buffer.get_size() / stride);
-                    }
-                },
-                VerticesSource::ManualVertexBuffer(ref buffer, _, stride, true) => {
-                    if let Some(curr) = instances_count {
-                        if curr != buffer.get_size() / stride {
-                            return Err(DrawError::InstancesCountMismatch);
-                        }
-                    } else {
-                        instances_count = Some(buffer.get_size() / stride);
                     }
                 },
                 VerticesSource::Marker { len, per_instance } if !per_instance => {

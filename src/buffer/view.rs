@@ -1305,6 +1305,13 @@ impl<'a> BufferAnySlice<'a> {
         self.get_size() / self.elements_size
     }
 
+    /// Sets the size in bytes of each element in the buffer.
+    /// This also changes the number of elements.
+    #[inline]
+    pub fn set_elements_size(&mut self, size: usize) {
+        self.elements_size = size;
+    }
+
     /// Invalidates the content of the slice. The data becomes undefined.
     ///
     /// This operation is a no-op if the backend doesn't support it and for persistent-mapped
@@ -1324,7 +1331,7 @@ impl<'a> BufferAnySlice<'a> {
 impl<'a> fmt::Debug for BufferAnySlice<'a> {
     #[inline]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
-        write!(fmt, "{:?} bytes[{}..{}]", self.alloc, self.bytes_start, self.bytes_end)
+        write!(fmt, "{:?} bytes[{}..{}] stride {}", self.alloc, self.bytes_start, self.bytes_end, self.elements_size)
     }
 }
 

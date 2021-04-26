@@ -154,11 +154,6 @@ pub enum VerticesSource<'a> {
     /// "per vertex" (false).
     VertexBuffer(BufferAnySlice<'a>, &'a VertexFormat, bool),
 
-    /// A buffer uploaded in the video memory.
-    /// The third parameter is the stride specified manually.
-    /// Use at your own risk.
-    ManualVertexBuffer(BufferAnySlice<'a>, &'a VertexFormat, usize, bool),
-
     /// A marker indicating a "phantom list of attributes".
     Marker {
         /// Number of attributes.
