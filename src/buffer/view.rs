@@ -1324,7 +1324,7 @@ impl<'a> BufferAnySlice<'a> {
 impl<'a> fmt::Debug for BufferAnySlice<'a> {
     #[inline]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
-        write!(fmt, "{:?}", self.alloc)
+        write!(fmt, "{:?} bytes[{}..{}]", self.alloc, self.bytes_start, self.bytes_end)
     }
 }
 
