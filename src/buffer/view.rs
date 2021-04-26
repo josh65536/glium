@@ -1308,8 +1308,9 @@ impl<'a> BufferAnySlice<'a> {
     /// Sets the size in bytes of each element in the buffer.
     /// This also changes the number of elements.
     #[inline]
-    pub fn set_elements_size(&mut self, size: usize) {
+    pub fn with_elements_size(mut self, size: usize) -> Self {
         self.elements_size = size;
+        self
     }
 
     /// Invalidates the content of the slice. The data becomes undefined.
