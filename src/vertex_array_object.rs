@@ -297,18 +297,19 @@ impl VertexArrayObject {
         }
 
         // checking for missing attributes
-        for (&ref name, _) in program.attributes() {
-            let mut found = false;
-            for &(_, ref bindings, _, _, _) in vertex_buffers {
-                if bindings.iter().any(|&(ref n, _, _, _)| n == name) {
-                    found = true;
-                    break;
-                }
-            }
-            if !found {
-                panic!("The program attribute `{}` is missing in the vertex bindings", name);
-            }
-        };
+        // TODO: Make avoiding the check more elegant
+        //for (&ref name, _) in program.attributes() {
+        //    let mut found = false;
+        //    for &(_, ref bindings, _, _, _) in vertex_buffers {
+        //        if bindings.iter().any(|&(ref n, _, _, _)| n == name) {
+        //            found = true;
+        //            break;
+        //        }
+        //    }
+        //    if !found {
+        //        panic!("The program attribute `{}` is missing in the vertex bindings", name);
+        //    }
+        //};
 
         // TODO: check for collisions between the vertices sources
 
